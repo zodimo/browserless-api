@@ -1,0 +1,331 @@
+openapi: 3.0.0
+info:
+  title: Browserless
+  description: Browserless api for Puppeteer version 1.9.0
+  version: 1.0.0
+
+tags:
+- name: pdf
+  description: Pdf Stuff
+  externalDocs:
+    description: Find out more
+    url: 'https://docs.browserless.io/docs/pdf.html'
+paths:
+  /pdf:
+    post:
+      tags:
+      - pdf
+      summary: Create a Pdf
+      description: ''
+      operationId: createPdf
+      requestBody:
+        $ref: '#/components/requestBodies/Pdf'
+
+      responses:
+        '200':
+          description: A PDF file
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+components:
+  requestBodies:
+    Pdf:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pdf'
+  schemas:
+    url:
+      title: URL which you want to pdf
+      type: string
+      example: https://example.com
+
+    html:
+      title: Html code which you want to pdf
+      type: string
+      example: <h1>hellow world</h1>
+
+    path:
+      title: Path
+      description: The file path to save the PDF to. If path is a relative path, then it is resolved relative to current working directory. If no path is provided, the PDF won't be saved to the disk.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    scale:
+      title: Scale
+      description: Scale of the webpage rendering. Defaults to 1.
+      type: number
+      nullable: true
+      default: 1
+      example: null
+
+    displayHeaderFooter:
+      title: DisplayHeaderFooter
+      description: Display header and footer. Defaults to false.
+      type: boolean
+      nullable: true
+      default: false
+      example: null
+
+    headerTemplate:
+      title: headerTemplate
+      description: HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into them
+      type: string
+      nullable: true
+      example: null
+
+    footerTemplate:
+      title: footerTemplate
+      description: HTML template for the print footer. Should use the same format as the headerTemplate.
+      type: string
+      nullable: true
+      example: null
+
+    printBackground:
+      title: printBackground
+      description: Print background graphics. Defaults to false.
+      type: boolean
+      nullable: true
+      default: false
+      example: null
+
+    landscape:
+      title: landscape
+      description: Paper orientation. Defaults to false.
+      type: boolean
+      nullable: true
+      default: false
+      example: null
+
+    pageRanges:
+      title: pageRanges
+      description:  Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    format:
+      title: format
+      description: Paper format. If set, takes priority over width or height options. Defaults to 'Letter'.
+      type: string
+      nullable: true
+      default: letter
+      example: null
+      enum: [
+        Letter,
+        Legal,
+        Tabloid,
+        Ledger,
+        A0,
+        A1,
+        A2,
+        A3,
+        A4,
+        A5,
+        A6
+      ]
+    width:
+      title: width
+      description: Paper width, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    height:
+      title: height
+      description: Paper height, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    top:
+      title: top
+      description:  Top margin, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    right:
+      title: right
+      description: Right margin, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    bottom:
+      title: bottom
+      description: Bottom margin, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    left:
+      title: left
+      description: Left margin, accepts values labeled with units.
+      type: string
+      nullable: true
+      default: null
+      example: null
+
+    margin:
+      title: margin
+      description: Paper margins, defaults to none.
+      type: object
+      nullable: true
+      default: null
+      example: null
+      properties:
+        top:
+          $ref: '#/components/schemas/top'
+        right:
+          $ref: '#/components/schemas/right'
+        bottom:
+          $ref: '#/components/schemas/bottom'
+        left:
+          $ref: '#/components/schemas/left'
+
+    gotoOptionsUrl:
+      title: gotoOptionsUrl
+      description: URL to navigate page to. The url should include scheme, e.g. https://.
+      type: string
+      nullable: false
+      example: https://www.example.com
+
+    gotoOptionsOptionsTimeout:
+      title: gotoOptionsOptionsTimeout
+      description: Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout. The default value can be changed by using the page.setDefaultNavigationTimeout(timeout) method.
+      type: number
+      default: 30
+      nullable: true
+      example: null
+
+    gotoOptionsOptionsWaitUntilEvent:
+      title: gotoOptionsOptionsWaitUntilEvent
+      description: gotoOptionsOptionsWaitUntilEvent
+      type: string
+      nullable: true
+      default: null
+      example: null
+      enum: [
+        load,
+        domcontentloaded,
+        networkidle0,
+        networkidle2,
+      ]
+
+    gotoOptionsOptionsWaitUntilEvents:
+      title: gotoOptionsOptionsWaitUntilEvents
+      description: gotoOptionsOptionsWaitUntilEvents
+      type: array
+      items:
+        $ref: '#/components/schemas/gotoOptionsOptionsWaitUntilEvent'
+
+    gotoOptionsOptionsWaitUntil:
+      title: gotoOptionsOptionsWaitUntil
+      description: When to consider navigation succeeded, defaults to load. Given an array of event strings, navigation is considered to be successful after all events have been fired.
+      oneOf:
+      - $ref: '#/components/schemas/gotoOptionsOptionsWaitUntilEvents'
+      - $ref: '#/components/schemas/gotoOptionsOptionsWaitUntilEvent'
+
+
+    gotoOptionsOptions:
+      title: gotoOptionsOptions
+      description: Navigation parameters
+      type: object
+      properties:
+        timeout:
+          $ref: '#/components/schemas/gotoOptionsOptionsTimeout'
+        waitUntil:
+          $ref: '#/components/schemas/gotoOptionsOptionsWaitUntil'
+
+
+    gotoOptions:
+      title: gotoOptions
+      description: The gotoOptions is an object that's passed directly into puppeteer's page.goto call so that you can specify things like alternative loaded events. See puppeteer's goto options for more information.
+      type: object
+      nullable: true
+      default: null
+      example: null
+      properties:
+        url:
+          $ref: '#/components/schemas/gotoOptionsUrl'
+        option:
+          $ref: '#/components/schemas/gotoOptionsOptions'
+
+
+    options:
+      title: Pdf Options
+      description: The /pdf route has a few special custom options that make it more usable and configurable. We've added these options based on feedback from you in hope that it will help gather best-practices in a single place.
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/path'
+        scale:
+          $ref: '#/components/schemas/scale'
+        displayHeaderFooter:
+          $ref: '#/components/schemas/displayHeaderFooter'
+        headerTemplate:
+          $ref: '#/components/schemas/headerTemplate'
+        footerTemplate:
+          $ref: '#/components/schemas/footerTemplate'
+        printBackground:
+          $ref: '#/components/schemas/printBackground'
+        landscape:
+          $ref: '#/components/schemas/landscape'
+        pageRanges:
+          $ref: '#/components/schemas/pageRanges'
+        format:
+          $ref: '#/components/schemas/format'
+        width:
+          $ref: '#/components/schemas/width'
+        height:
+          $ref: '#/components/schemas/height'
+        margin:
+          $ref: '#/components/schemas/margin'
+
+
+
+    PdfFromUrl:
+      title: Request to create  Pdf from url
+      description: A Pdf Request
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          $ref: '#/components/schemas/url'
+
+    PdfFromHtml:
+      title: Request to create Pdf from html
+      description: A Pdf Request
+      type: object
+      required:
+      - html
+      properties:
+        html:
+          $ref: '#/components/schemas/html'
+
+    Pdf:
+      oneOf:
+      - $ref: '#/components/schemas/PdfFromUrl'
+      - $ref: '#/components/schemas/PdfFromHtml'
+      properties:
+        options:
+          $ref: '#/components/schemas/options'
+        gotoOptions:
+          $ref: '#/components/schemas/gotoOptions'
