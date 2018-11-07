@@ -132,8 +132,7 @@ components:
         A3,
         A4,
         A5,
-        A6
-      ]
+        A6 ]
     width:
       title: width
       description: Paper width, accepts values labeled with units.
@@ -225,8 +224,7 @@ components:
         load,
         domcontentloaded,
         networkidle0,
-        networkidle2,
-      ]
+        networkidle2 ]
 
     gotoOptionsOptionsWaitUntilEvents:
       title: gotoOptionsOptionsWaitUntilEvents

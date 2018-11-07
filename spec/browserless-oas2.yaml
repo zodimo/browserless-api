@@ -1,0 +1,258 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Browserless
+  description: Description of browserless.io Rest
+  contact:
+    name: Jaco
+    email: zodimo@gmail.com
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+
+host: localhost:3000
+
+tags:
+- name: pdf
+
+paths:
+  /pdf:
+    post:
+      tags: [pdf]
+      description: The pdf API allows for simple navigation to a site and capturing a pdf. browserless will respond with a Content-Type of application/pdf, and a Buffer of the pdf file. Similar to screenshots, this also exposes puppeteer's pdf options via an options property in the JSON body for granular control.
+      consumes:
+      - application/json
+      produces:
+      - application/pdf
+
+      parameters:
+      - name: pdf
+        in: body
+        description: Options to create the pdf
+        required: true
+        schema:
+          $ref: '#/definitions/pdf'
+
+
+      responses:
+        200:
+          description: OK
+
+
+definitions:
+  path:
+    title: Path
+    description: The file path to save the PDF to. If path is a relative path, then it is resolved relative to current working directory. If no path is provided, the PDF won't be saved to the disk.
+    type: string
+    default: ""
+    example: ""
+
+  scale:
+    title: Scale
+    description: Scale of the webpage rendering. Defaults to 1.
+    type: number
+    default: 1
+    example: 1
+
+
+  displayHeaderFooter:
+    title: DisplayHeaderFooter
+    description: Display header and footer. Defaults to false.
+    type: boolean
+    default: false
+    example: null
+
+  headerTemplate:
+    title: headerTemplate
+    description: HTML template for the print header. Should be valid HTML markup with following classes used to inject printing values into them
+    type: string
+    example: null
+
+  footerTemplate:
+    title: footerTemplate
+    description: HTML template for the print footer. Should use the same format as the headerTemplate.
+    type: string
+    example: null
+
+  printBackground:
+    title: printBackground
+    description: Print background graphics. Defaults to false.
+    type: boolean
+    default: false
+    example: null
+
+  landscape:
+    title: landscape
+    description: Paper orientation. Defaults to false.
+    type: boolean
+    default: false
+    example: null
+
+  pageRanges:
+    title: pageRanges
+    description:  Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+    type: string
+    default: null
+    example: null
+
+  format:
+    title: format
+    description: Paper format. If set, takes priority over width or height options. Defaults to 'Letter'.
+    type: string
+    default: letter
+    example: null
+    enum: [
+      Letter,
+      Legal,
+      Tabloid,
+      Ledger,
+      A0,
+      A1,
+      A2,
+      A3,
+      A4,
+      A5,
+      A6 ]
+
+  width:
+    title: width
+    description: Paper width, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  height:
+    title: height
+    description: Paper height, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  top:
+    title: top
+    description:  Top margin, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  right:
+    title: right
+    description: Right margin, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  bottom:
+    title: bottom
+    description: Bottom margin, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  left:
+    title: left
+    description: Left margin, accepts values labeled with units.
+    type: string
+    default: null
+    example: null
+
+  margin:
+    title: margin
+    description: Paper margins, defaults to none.
+    type: object
+    default: null
+    example: null
+    properties:
+      top:
+        $ref: '#/definitions/top'
+      right:
+        $ref: '#/definitions/right'
+      bottom:
+        $ref: '#/definitions/bottom'
+      left:
+        $ref: '#/definitions/left'
+
+
+
+  gotoOptionsUrl:
+    title: gotoOptionsUrl
+    description: URL to navigate page to. The url should include scheme, e.g. https://.
+    type: string
+    example: https://www.example.com
+
+  gotoOptionsOptionsTimeout:
+    title: gotoOptionsOptionsTimeout
+    description: Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout. The default value can be changed by using the page.setDefaultNavigationTimeout(timeout) method.
+    type: number
+    default: 30
+    example: null
+
+  gotoOptionsOptionsWaitUntil:
+    title: gotoOptionsOptionsWaitUntil
+    description: When to consider navigation succeeded, defaults to load. Given an array of event strings, navigation is considered to be successful after all events have been fired.
+    type: string
+
+  gotoOptionsOptions:
+    title: gotoOptionsOptions
+    description: Navigation parameters
+    type: object
+    properties:
+      timeout:
+        $ref: '#/definitions/gotoOptionsOptionsTimeout'
+      waitUntil:
+        $ref: '#/definitions/gotoOptionsOptionsWaitUntil'
+
+
+  options:
+    title: Pdf Options
+    type: object
+    properties:
+      path:
+        $ref: '#/definitions/path'
+      scale:
+        $ref: '#/definitions/scale'
+      displayHeaderFooter:
+        $ref: '#/definitions/displayHeaderFooter'
+      headerTemplate:
+        $ref: '#/definitions/headerTemplate'
+      footerTemplate:
+        $ref: '#/definitions/footerTemplate'
+      printBackground:
+        $ref: '#/definitions/printBackground'
+      landscape:
+        $ref: '#/definitions/landscape'
+      pageRanges:
+        $ref: '#/definitions/pageRanges'
+      format:
+        $ref: '#/definitions/format'
+      width:
+        $ref: '#/definitions/width'
+      height:
+        $ref: '#/definitions/height'
+      margin:
+        $ref: '#/definitions/margin'
+
+
+
+  gotoOptions:
+    title: Pdf Goto Options
+    description: The gotoOptions is an object that's passed directly into puppeteer's page.goto call so that you can specify things like alternative loaded events. See puppeteer's goto options for more information.
+    type: object
+    properties:
+      url:
+        $ref: '#/definitions/gotoOptionsUrl'
+      option:
+        $ref: '#/definitions/gotoOptionsOptions'
+
+  pdf:
+    title: pdf
+    type: object
+    properties:
+      url:
+        type: string
+      html:
+        type: string
+      options:
+        $ref: '#/definitions/options'
+      gotoOptions:
+        $ref: '#/definitions/gotoOptions'
