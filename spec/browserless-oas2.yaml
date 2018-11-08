@@ -172,35 +172,17 @@ definitions:
       left:
         $ref: '#/definitions/left'
 
-
-
-  gotoOptionsUrl:
-    title: gotoOptionsUrl
-    description: URL to navigate page to. The url should include scheme, e.g. https://.
-    type: string
-    example: https://www.example.com
-
-  gotoOptionsOptionsTimeout:
+  gotoOptionsTimeout:
     title: gotoOptionsOptionsTimeout
     description: Maximum navigation time in milliseconds, defaults to 30 seconds, pass 0 to disable timeout. The default value can be changed by using the page.setDefaultNavigationTimeout(timeout) method.
     type: number
     default: 30
     example: null
 
-  gotoOptionsOptionsWaitUntil:
+  gotoOptionsWaitUntil:
     title: gotoOptionsOptionsWaitUntil
     description: When to consider navigation succeeded, defaults to load. Given an array of event strings, navigation is considered to be successful after all events have been fired.
     type: string
-
-  gotoOptionsOptions:
-    title: gotoOptionsOptions
-    description: Navigation parameters
-    type: object
-    properties:
-      timeout:
-        $ref: '#/definitions/gotoOptionsOptionsTimeout'
-      waitUntil:
-        $ref: '#/definitions/gotoOptionsOptionsWaitUntil'
 
 
   options:
@@ -239,10 +221,10 @@ definitions:
     description: The gotoOptions is an object that's passed directly into puppeteer's page.goto call so that you can specify things like alternative loaded events. See puppeteer's goto options for more information.
     type: object
     properties:
-      url:
-        $ref: '#/definitions/gotoOptionsUrl'
-      option:
-        $ref: '#/definitions/gotoOptionsOptions'
+      timeout:
+        $ref: '#/definitions/gotoOptionsTimeout'
+      waitUntil:
+        $ref: '#/definitions/gotoOptionsWaitUntil'
 
   pdf:
     title: pdf
